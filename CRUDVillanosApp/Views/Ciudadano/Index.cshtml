@@ -1,0 +1,57 @@
+﻿@model IEnumerable<CRUDVillanosApp.Controllers.Ciudadano>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 id="app">{{title}}</h1>
+
+<form asp-controller="Ciudadano" asp-action="Index">
+    <p>
+        Buscar: <input type="text" name="buscar" class="form-text"/>
+        <input type="submit" value="Buscar" class="btn btn-sm btn-dark"/>
+    </p>
+</form>
+<a asp-action="Create" class="btn btn-primary">Crear nuevo</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Edad)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Edad)
+                </td>
+                <td>              
+                    <a asp-action="Edit" asp-route-id="@item.id" class="btn btn-warning">Edita</a> |
+                    <a asp-action="Details" asp-route-id="@item.id" class="btn btn-primary">Detalle</a> |
+                    <a asp-action="Delete" asp-route-id="@item.id" class="btn btn-danger">Elimina</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@*Seccion Vue*@
+@section Scripts {
+    <script>
+        var title = new Vue({
+            el: "#app",
+            data: {
+                title: "CRUD Ciudadanos"
+            }
+        });        
+    </script>
+    }

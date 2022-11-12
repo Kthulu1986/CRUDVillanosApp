@@ -1,0 +1,71 @@
+﻿@model CRUDVillanosApp.Controllers.Tarea
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 id="app">{{title}}</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label">Nombre Tarea</label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCiudadano" class="control-label">Asignar a:</label>
+                <select asp-for="IdCiudadano" class="form-control" asp-items="ViewBag.IdCiudadano"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="dia" class="control-label">Dia de la semana</label>
+                <br />
+                <select asp-for="dia" class="form-control">
+                    <option asp-for="dia" value="1">Lunes</option>
+                    <option asp-for="dia" value="2">Martes</option>
+                    <option asp-for="dia" value="3">Miercoles</option>
+                    <option asp-for="dia" value="4">Jueves</option>
+                    <option asp-for="dia" value="6">Viernes</option>
+                    <option asp-for="dia" value="7">Sabado</option>
+                    <option asp-for="dia" value="8">Domingo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="btn" v-model="message" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Ciudadano" asp-action="Index" id="vol">{{backMsg}}</a>
+</div>
+
+@*Seccion Vue*@
+@section Scripts {
+    <script>
+        var title = new Vue({
+            el: "#app",
+            data: {
+                title: "Asignar tarea"
+            }
+        });
+        var volver = new Vue({
+            el: "#vol",
+            data: {
+                backMsg: "Volver"
+            }
+        });
+        var boton = new Vue({
+            el: "#btn",
+            data: {
+                message: "Crear"
+            }
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

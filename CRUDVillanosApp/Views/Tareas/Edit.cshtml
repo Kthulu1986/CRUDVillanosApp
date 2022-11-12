@@ -1,0 +1,64 @@
+﻿@model CRUDVillanosApp.Controllers.Tarea
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 id="app">{{title}}</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id" />
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCiudadano" class="control-label"></label>
+                <select asp-for="IdCiudadano" class="form-control" asp-items="ViewBag.IdCiudadano"></select>
+                <span asp-validation-for="IdCiudadano" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="btn" v-model="message" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" id="vol">{{backMsg}}</a>
+</div>
+
+@*Seccion Vue*@
+@section Scripts {
+    <script>
+        var title = new Vue({
+            el: "#app",
+            data: {
+                title: "Editar"
+            }
+        });
+        var volver = new Vue({
+            el: "#vol",
+            data: {
+                backMsg: "Volver"
+            }
+        });
+        var boton = new Vue({
+            el: "#btn",
+            data: {
+                message: "Guardar"
+            }
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
+
+

@@ -20,7 +20,7 @@ namespace CRUDVillanosApp.Controllers
         // GET: Tareas
         public async Task<IActionResult> Index()
         {
-            var myIndiminContext = _context.Tareas.Include(t => t.Ciudadano);
+            var myIndiminContext = _context.Tareas.AsNoTracking().Include(t => t.Ciudadano);
             return View(await myIndiminContext.ToListAsync());
         }
 
@@ -33,6 +33,7 @@ namespace CRUDVillanosApp.Controllers
             }
 
             var tarea = await _context.Tareas
+                .AsNoTracking()
                 .Include(t => t.Ciudadano)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (tarea == null)
@@ -46,7 +47,7 @@ namespace CRUDVillanosApp.Controllers
         // GET: Tareas/Create
         public IActionResult Create()
         {
-            ViewData["IdCiudadano"] = new SelectList(_context.Ciudadanos, "id", "Nombre");
+            ViewData["IdCiudadano"] = new SelectList(_context.Ciudadanos.AsNoTracking(), "id", "Nombre");
             return View();
         }
 
@@ -64,7 +65,7 @@ namespace CRUDVillanosApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Create));
             }
-            ViewData["IdCiudadano"] = new SelectList(_context.Ciudadanos, "id", "id", tarea.IdCiudadano);
+            ViewData["IdCiudadano"] = new SelectList(_context.Ciudadanos.AsNoTracking(), "id", "id", tarea.IdCiudadano);
             return View(tarea);
         }
 
@@ -81,7 +82,7 @@ namespace CRUDVillanosApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdCiudadano"] = new SelectList(_context.Ciudadanos, "id", "id", tarea.IdCiudadano);
+            ViewData["IdCiudadano"] = new SelectList(_context.Ciudadanos.AsNoTracking(), "id", "id", tarea.IdCiudadano);
             return View(tarea);
         }
 
@@ -106,7 +107,7 @@ namespace CRUDVillanosApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TareaExists(tarea.id))
+                    if (!await TareaExists(tarea.id))
                     {
                         return NotFound();
                     }
@@ -117,7 +118,7 @@ namespace CRUDVillanosApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCiudadano"] = new SelectList(_context.Ciudadanos, "id", "id", tarea.IdCiudadano);
+            ViewData["IdCiudadano"] = new SelectList(_context.Ciudadanos.AsNoTracking(), "id", "id", tarea.IdCiudadano);
             return View(tarea);
         }
 
@@ -130,6 +131,7 @@ namespace CRUDVillanosApp.Controllers
             }
 
             var tarea = await _context.Tareas
+                .AsNoTracking()
                 .Include(t => t.Ciudadano)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (tarea == null)
@@ -159,9 +161,9 @@ namespace CRUDVillanosApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TareaExists(int id)
+        private async Task<bool> TareaExists(int id)
         {
-          return _context.Tareas.Any(e => e.id == id);
+          return await _context.Tareas.AnyAsync(e => e.id == id);
         }
     }
 }

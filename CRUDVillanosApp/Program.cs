@@ -16,13 +16,15 @@ var app = builder.Build();
  * ************************************************************
  * ------------------------------------------------------------
  * 11-11-2022
- * Configuración para la migración del contexto SQL SERVER
+ * Configuraciï¿½n para la migraciï¿½n del contexto SQL SERVER
  * Nelson Huenchuleo 
  * ------------------------------------------------------------
  * ************************************************************
  */
 
 //le decimos que represente las clase/tablas en la BD, program es la primera clase que se ejecuta en este proyecto CRUD
+// PERFORMANCE NOTE: Running migrations on startup can cause slow application start times.
+// Consider moving this to a separate deployment step for production environments.
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<MyIndiminContext>();

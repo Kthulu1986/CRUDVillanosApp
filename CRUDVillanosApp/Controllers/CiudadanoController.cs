@@ -20,7 +20,7 @@ namespace CRUDVillanosApp.Controllers
         // GET: Ciudadano
         public async Task<IActionResult> Index(string buscar)
         {
-            var ciudadanos = from Nombre in _context.Ciudadanos select Nombre;
+            var ciudadanos = from Nombre in _context.Ciudadanos.AsNoTracking() select Nombre;
 
             if (!String.IsNullOrEmpty(buscar))
             {
@@ -41,6 +41,7 @@ namespace CRUDVillanosApp.Controllers
             }
 
             var ciudadano = await _context.Ciudadanos
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.id == id);
             if (ciudadano == null)
             {
@@ -109,7 +110,7 @@ namespace CRUDVillanosApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CiudadanoExists(ciudadano.id))
+                    if (!await CiudadanoExists(ciudadano.id))
                     {
                         return NotFound();
                     }
@@ -132,6 +133,7 @@ namespace CRUDVillanosApp.Controllers
             }
 
             var ciudadano = await _context.Ciudadanos
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.id == id);
             if (ciudadano == null)
             {
@@ -160,9 +162,9 @@ namespace CRUDVillanosApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CiudadanoExists(int id)
+        private async Task<bool> CiudadanoExists(int id)
         {
-            return _context.Ciudadanos.Any(e => e.id == id);
+            return await _context.Ciudadanos.AnyAsync(e => e.id == id);
         }
     }
 }

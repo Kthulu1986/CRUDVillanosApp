@@ -16,7 +16,7 @@ var app = builder.Build();
  * ************************************************************
  * ------------------------------------------------------------
  * 11-11-2022
- * Configuración para la migración del contexto SQL SERVER
+ * Configuraciï¿½n para la migraciï¿½n del contexto SQL SERVER
  * Nelson Huenchuleo 
  * ------------------------------------------------------------
  * ************************************************************
@@ -26,7 +26,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<MyIndiminContext>();
-    context.Database.Migrate();
+    await context.Database.MigrateAsync();
 }
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
